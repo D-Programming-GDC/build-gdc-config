@@ -1,0 +1,11 @@
+{
+  "name":"Linux ARM (hardfloat)",
+  "triplet":"arm-linux-gnueabihf",
+  "archiveURL":"ftp://ftp.gdcproject.org/binaries/arm-linux-gnueabihf/",
+  "downloadSets":[
+    {
+      "id":"standard",
+      "name":"Standard builds"
+    }
+  ]
+}

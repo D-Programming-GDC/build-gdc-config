@@ -1,0 +1,8 @@
+{
+    "target":"native",
+    "runtime":"yes",
+    "set":"standard",
+    "type":0,
+    "depends":["i686-linux-gnu"],
+    "ctTarget":"i686-gdcproject-linux-gnu"
+}

@@ -1,0 +1,11 @@
+{
+  "name":"Linux X86 64bit",
+  "triplet":"x86_64-linux-gnu",
+  "archiveURL":"ftp://ftp.gdcproject.org/binaries/x86_64-linux-gnu/",
+  "downloadSets":[
+    {
+      "id":"standard",
+      "name":"Standard builds"
+    }
+  ]
+}

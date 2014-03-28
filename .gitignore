@@ -1,3 +1,5 @@
-**/config.gen/
-**/.config.2
-**/.config.old
+config.gen/
+.config.2
+.config.old
+build.log
+config

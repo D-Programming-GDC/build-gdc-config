@@ -1,0 +1,2 @@
+C cross compiler config targetting x86_64-w64-mingw32. Used for building D
+toolchains which _run_ on x86_64 windows (host == x86_64-w64-mingw32)

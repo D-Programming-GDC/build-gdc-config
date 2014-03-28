@@ -1,0 +1,8 @@
+{
+    "target":"native",
+    "runtime":"yes",
+    "set":"standard",
+    "type":0,
+    "depends":["arm-linux-gnueabi"],
+    "ctTarget":"arm-gdcproject-linux-gnueabi"
+}

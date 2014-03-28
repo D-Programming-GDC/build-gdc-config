@@ -1,0 +1,8 @@
+{
+    "target":"native",
+    "runtime":"no",
+    "set":"standard",
+    "type":0,
+    "depends":["i686-w64-mingw32"],
+    "ctTarget":"i686-gdcproject-mingw32"
+}

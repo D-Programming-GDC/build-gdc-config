@@ -1,0 +1,11 @@
+{
+  "name":"Linux ARM (softfloat)",
+  "triplet":"arm-linux-gnueabi",
+  "archiveURL":"ftp://ftp.gdcproject.org/binaries/arm-linux-gnueabi/",
+  "downloadSets":[
+    {
+      "id":"standard",
+      "name":"Standard builds"
+    }
+  ]
+}

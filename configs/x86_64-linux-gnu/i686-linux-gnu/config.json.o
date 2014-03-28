@@ -1,0 +1,7 @@
+{
+    "target":"i686-linux-gnu",
+    "runtime":"yes",
+    "set":"standard",
+    "type":0,
+    "ctTarget":"i686-gdcproject-linux-gnu"
+}

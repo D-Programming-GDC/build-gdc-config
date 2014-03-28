@@ -1,0 +1,11 @@
+{
+  "name":"Windows X86 64bit",
+  "triplet":"x86_64-w64-mingw32",
+  "archiveURL":"ftp://ftp.gdcproject.org/binaries/x86_64-w64-mingw32/",
+  "downloadSets":[
+    {
+      "id":"standard",
+      "name":"Standard builds"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+    "target":"x86_64-w64-mingw32",
+    "runtime":"no",
+    "set":"standard",
+    "type":0,
+    "ctTarget":"x86_64-gdcproject-mingw32"
+}

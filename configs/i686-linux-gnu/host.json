@@ -1,0 +1,11 @@
+{
+  "name":"Linux X86 32bit",
+  "triplet":"i686-linux-gnu",
+  "archiveURL":"ftp://ftp.gdcproject.org/binaries/i686-linux-gnu/",
+  "downloadSets":[
+    {
+      "id":"standard",
+      "name":"Standard builds"
+    }
+  ]
+}

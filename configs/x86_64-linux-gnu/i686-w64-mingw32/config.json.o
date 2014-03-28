@@ -1,0 +1,7 @@
+{
+    "target":"i686-w64-mingw32",
+    "runtime":"no",
+    "set":"standard",
+    "type":0,
+    "ctTarget":"i686-gdcproject-mingw32"
+}
