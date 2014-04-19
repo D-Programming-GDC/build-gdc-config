@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>GDC toolchain README</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://stackedit.io/libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><div class="se-section-delimiter"></div><div class="se-section-delimiter"></div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This provides a pre-built, binary <a href="http://gdcproject.org">GDC</a> toolchain. GDC is a GCC based compiler for the <a href="http://dlang.org">D language</a>. <br>
+Sources are available at <a href="https://github.com/D-Programming-GDC">github</a> and more information is available on the <a href="http://wiki.dlang.org/GDC">wiki</a>. Please <br>
+report bugs to our <a href="http://bugzilla.gdcproject.org/">bugtracker</a>.</p><div class="se-section-delimiter"></div>
+
+<h2 id="installation">Installation</h2>
+
+<p>Simply extract this archive to some folder, but do <strong>not extract to your system root folder (/)</strong>.</p><div class="se-section-delimiter"></div>
+
+<pre style="" class="prettyprint prettyprinted"><code class="language-bash"><span class="pln">cd </span><span class="pun">/</span><span class="pln">home</span><span class="pun">/</span><span class="pln">jpf
+wget http</span><span class="pun">:</span><span class="com">//gdcproject.org/downloads/binaries/x86_64-linux-gnu/arm-linux-gnueabi_2.064.2_gcc4.8.2_665978132e_20140312.tar.xz</span><span class="pln">
+tar xf arm</span><span class="pun">-</span><span class="pln">linux</span><span class="pun">-</span><span class="pln">gnueabi_2</span><span class="pun">.</span><span class="lit">064.2</span><span class="pln">_gcc4</span><span class="pun">.</span><span class="lit">8.2</span><span class="pln">_665978132e_20140312</span><span class="pun">.</span><span class="pln">tar</span><span class="pun">.</span><span class="pln">xz</span></code></pre>
+
+<h3 id="windows">Windows</h3>
+
+<p>Extract the archive with your favorite archive manager, e.g. <a href="http://www.7-zip.org/">7zip</a>. If it asks whether it should overwrite files, <br>
+answer yes. (The archives are built on case-sensitive filesystems, extracting on case-insensitive filesystems can cause these warnings).</p><div class="se-section-delimiter"></div>
+
+<h2 id="usage">Usage</h2><div class="se-section-delimiter"></div>
+
+<h3 id="introduction-1">Introduction</h3>
+
+<p>The compiler executable is called <em>TARGET-gdc[.exe]</em> and the full path is <em>TARGET/bin/TARGET-gdc[.exe]</em>. To compile a simple hello world:</p><div class="se-section-delimiter"></div>
+
+<pre style="" class="prettyprint prettyprinted"><code class="language-bash"><span class="pln">echo </span><span class="str">'import std.stdio; void main(){writeln("Hello World!");}'</span><span class="pln"> </span><span class="pun">&gt;</span><span class="pln"> hello</span><span class="pun">.</span><span class="pln">d
+arm</span><span class="pun">-</span><span class="pln">gdcproject</span><span class="pun">-</span><span class="pln">linux</span><span class="pun">-</span><span class="pln">gnueabi</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">arm</span><span class="pun">-</span><span class="pln">gdcproject</span><span class="pun">-</span><span class="pln">linux</span><span class="pun">-</span><span class="pln">gnueabi</span><span class="pun">-</span><span class="pln">gdc hello</span><span class="pun">.</span><span class="pln">d </span><span class="pun">-</span><span class="pln">o hello
+
+</span><span class="com">#or export the path</span><span class="pln">
+</span><span class="kwd">export</span><span class="pln"> PATH</span><span class="pun">=</span><span class="pln">$PATH</span><span class="pun">:</span><span class="pln">$PWD</span><span class="pun">/</span><span class="pln">arm</span><span class="pun">-</span><span class="pln">gdcproject</span><span class="pun">-</span><span class="pln">linux</span><span class="pun">-</span><span class="pln">gnueabi</span><span class="pun">/</span><span class="pln">bin
+arm</span><span class="pun">-</span><span class="pln">gdcproject</span><span class="pun">-</span><span class="pln">linux</span><span class="pun">-</span><span class="pln">gnueabi</span><span class="pun">-</span><span class="pln">gdc hello</span><span class="pun">.</span><span class="pln">d </span><span class="pun">-</span><span class="pln">o hello</span></code></pre>
+
+<p>Windows users should replace arm-gdcproject-linux-gnueabi-gdc with arm-gdcproject-linux-gnueabi-gdc.exe.</p>
+
+<p>More GDC usage information is available at <a href="http://wiki.dlang.org/GDC/Using_GDC">http://wiki.dlang.org/GDC/Using_GDC</a> , <br>
+<a href="http://wiki.dlang.org/GDC">http://wiki.dlang.org/GDC</a> and <a href="http://gdcproject.org">http://gdcproject.org</a> .</p><div class="se-section-delimiter"></div>
+
+<h3 id="advanced">Advanced</h3>
+
+<p>The difficult part now is how to use third party libraries with cross-compilers. <br>
+The standard way to do this is to build all required libraries with this toolchain, <br>
+see <a href="http://crosstool-ng.org/hg/crosstool-ng/raw-file/tip/docs/5%20-%20Using%20the%20toolchain.txt">crosstool-NG</a> for more information.</p>
+
+<p>A simpler way is to use the root filesystems of a real TARGET machine via SSH. <br>
+See <a href="http://wiki.dlang.org/GDC/Cross_Compiler/Existing_Sysroot">http://wiki.dlang.org/GDC/Cross_Compiler/Existing_Sysroot</a> for details.</p></div></body>
+</html>
