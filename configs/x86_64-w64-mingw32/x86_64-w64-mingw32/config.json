@@ -2,6 +2,7 @@
     "target":"native",
     "runtime":"no",
     "set":"standard",
+    "comment": "Unsupported alpha build. SEH",
     "type":0,
     "depends":["x86_64-w64-mingw32"],
     "ctTarget":"x86_64-gdcproject-mingw32"

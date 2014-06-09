@@ -2,6 +2,7 @@
     "target":"i686-w64-mingw32",
     "runtime":"no",
     "set":"standard",
+    "comment": "Unsupported alpha build",
     "type":0,
     "ctTarget":"i686-gdcproject-mingw32"
 }
