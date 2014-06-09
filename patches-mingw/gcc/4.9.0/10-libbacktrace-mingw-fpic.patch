@@ -1,0 +1,30 @@
+diff -ur libbacktrace.orig/configure libbacktrace/configure
+--- gcc-4.8.2.orig/libbacktrace/configure	2014-03-06 14:03:11.163461375 -0600
++++ gcc-4.8.2/libbacktrace/configure	2014-03-06 14:08:26.147461000 -0600
+@@ -11688,7 +11688,10 @@
+ # complicate dependencies.  Instead, we just compile with -fPIC.
+ PIC_FLAG=
+ if test -n "${with_target_subdir}"; then
+-  PIC_FLAG=-fPIC
++  case "${host}" in
++  *-*-mingw*) ;;
++  *) PIC_FLAG=-fPIC ;;
++  esac
+ fi
+ 
+ 
+diff -ur libbacktrace.orig/configure.ac libbacktrace/configure.ac
+--- gcc-4.8.2.orig/libbacktrace/configure.ac	2014-03-06 14:03:11.163461375 -0600
++++ gcc-4.8.2/libbacktrace/configure.ac	2014-03-06 14:08:27.967463872 -0600
+@@ -163,7 +163,10 @@
+ # complicate dependencies.  Instead, we just compile with -fPIC.
+ PIC_FLAG=
+ if test -n "${with_target_subdir}"; then
+-  PIC_FLAG=-fPIC
++  case "${host}" in
++  *-*-mingw*) ;;
++  *) PIC_FLAG=-fPIC ;;
++  esac
+ fi
+ AC_SUBST(PIC_FLAG)
+ 
