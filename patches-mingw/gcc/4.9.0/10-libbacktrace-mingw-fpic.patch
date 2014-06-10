@@ -1,7 +1,7 @@
-diff -ur libbacktrace.orig/configure libbacktrace/configure
---- gcc-4.8.2.orig/libbacktrace/configure	2014-03-06 14:03:11.163461375 -0600
-+++ gcc-4.8.2/libbacktrace/configure	2014-03-06 14:08:26.147461000 -0600
-@@ -11688,7 +11688,10 @@
+diff -ur gcc-4.9.0/libbacktrace/configure gcc-4.9.0-2/libbacktrace/configure
+--- gcc-4.9.0/libbacktrace/configure	2014-02-07 15:10:55.000000000 -0600
++++ gcc-4.9.0-2/libbacktrace/configure	2014-06-09 12:56:17.078940917 -0500
+@@ -11697,7 +11697,10 @@
  # complicate dependencies.  Instead, we just compile with -fPIC.
  PIC_FLAG=
  if test -n "${with_target_subdir}"; then
@@ -11,11 +11,14 @@ diff -ur libbacktrace.orig/configure libbacktrace/configure
 +  *) PIC_FLAG=-fPIC ;;
 +  esac
  fi
- 
- 
-diff -ur libbacktrace.orig/configure.ac libbacktrace/configure.ac
---- gcc-4.8.2.orig/libbacktrace/configure.ac	2014-03-06 14:03:11.163461375 -0600
-+++ gcc-4.8.2/libbacktrace/configure.ac	2014-03-06 14:08:27.967463872 -0600
+ # Similarly, use -fPIC with --enable-host-shared:
+ # Check whether --enable-host-shared was given.
+Only in gcc-4.9.0-2/libbacktrace/: configure.~1~
+Only in gcc-4.9.0-2/libbacktrace/: configure.~2~
+Only in gcc-4.9.0-2/libbacktrace/: configure.~3~
+diff -ur gcc-4.9.0/libbacktrace/configure.ac gcc-4.9.0-2/libbacktrace/configure.ac
+--- gcc-4.9.0/libbacktrace/configure.ac	2014-02-07 15:10:55.000000000 -0600
++++ gcc-4.9.0-2/libbacktrace/configure.ac	2014-06-09 12:56:17.078940917 -0500
 @@ -163,7 +163,10 @@
  # complicate dependencies.  Instead, we just compile with -fPIC.
  PIC_FLAG=
@@ -26,5 +29,5 @@ diff -ur libbacktrace.orig/configure.ac libbacktrace/configure.ac
 +  *) PIC_FLAG=-fPIC ;;
 +  esac
  fi
- AC_SUBST(PIC_FLAG)
- 
+ # Similarly, use -fPIC with --enable-host-shared:
+ AC_ARG_ENABLE(host-shared,

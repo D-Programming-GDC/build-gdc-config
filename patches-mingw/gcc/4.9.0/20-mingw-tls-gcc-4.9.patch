@@ -1,7 +1,7 @@
-diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i386/i386.c
---- gcc-4.8-20130303~/gcc/config/i386/i386.c	2013-02-21 04:57:10 -0600
-+++ gcc-4.8-20130303/gcc/config/i386/i386.c	2013-03-16 08:20:53 -0500
-@@ -4617,6 +4617,26 @@ ix86_in_large_data_p (tree exp)
+diff -ur gcc-4.9.0-2/gcc/config/i386/i386.c gcc-4.9.0/gcc/config/i386/i386.c
+--- gcc-4.9.0-2/gcc/config/i386/i386.c	2014-03-28 17:02:32.000000000 -0500
++++ gcc-4.9.0/gcc/config/i386/i386.c	2014-06-09 12:59:57.850821442 -0500
+@@ -5025,6 +5025,26 @@
    return false;
  }
  
@@ -28,7 +28,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
  /* Switch to the appropriate section for output of DECL.
     DECL is either a `VAR_DECL' node or a constant of some sort.
     RELOC indicates whether forming the initial value of DECL requires
-@@ -11930,6 +11950,9 @@ ix86_legitimate_constant_p (enum machine
+@@ -12459,6 +12479,9 @@
  	    x = XVECEXP (x, 0, 0);
  	    return (GET_CODE (x) == SYMBOL_REF
  		    && SYMBOL_REF_TLS_MODEL (x) == TLS_MODEL_LOCAL_DYNAMIC);
@@ -38,7 +38,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
  	  default:
  	    return false;
  	  }
-@@ -12028,6 +12051,9 @@ legitimate_pic_operand_p (rtx x)
+@@ -12570,6 +12593,9 @@
  	    x = XVECEXP (inner, 0, 0);
  	    return (GET_CODE (x) == SYMBOL_REF
  		    && SYMBOL_REF_TLS_MODEL (x) == TLS_MODEL_LOCAL_EXEC);
@@ -48,7 +48,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
  	  case UNSPEC_MACHOPIC_OFFSET:
  	    return legitimate_pic_address_disp_p (x);
  	  default:
-@@ -12169,6 +12195,9 @@ legitimate_pic_address_disp_p (rtx disp)
+@@ -12739,6 +12765,9 @@
        disp = XVECEXP (disp, 0, 0);
        return (GET_CODE (disp) == SYMBOL_REF
  	      && SYMBOL_REF_TLS_MODEL (disp) == TLS_MODEL_LOCAL_DYNAMIC);
@@ -58,7 +58,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
      }
  
    return false;
-@@ -12348,6 +12377,7 @@ ix86_legitimate_address_p (enum machine_
+@@ -12949,6 +12978,7 @@
  	  case UNSPEC_INDNTPOFF:
  	  case UNSPEC_NTPOFF:
  	  case UNSPEC_DTPOFF:
@@ -66,9 +66,9 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
  	    break;
  
  	  case UNSPEC_STACK_CHECK:
-@@ -12784,6 +12814,36 @@ legitimize_tls_address (rtx x, enum tls_
-   enum machine_mode tp_mode = Pmode;
-   int type;
+@@ -13404,6 +13434,36 @@
+       && model == TLS_MODEL_LOCAL_DYNAMIC)
+     model = TLS_MODEL_GLOBAL_DYNAMIC;
  
 +/* Windows implements a single form of TLS. */
 +#if TARGET_TLS_SECREL32
@@ -103,7 +103,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
    switch (model)
      {
      case TLS_MODEL_GLOBAL_DYNAMIC:
-@@ -13452,6 +13512,9 @@ output_pic_addr_const (FILE *file, rtx x
+@@ -14138,6 +14198,9 @@
  	case UNSPEC_INDNTPOFF:
  	  fputs ("@indntpoff", file);
  	  break;
@@ -113,7 +113,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
  #if TARGET_MACHO
  	case UNSPEC_MACHOPIC_OFFSET:
  	  putc ('-', file);
-@@ -13477,7 +13540,12 @@ i386_output_dwarf_dtprel (FILE *file, in
+@@ -14163,7 +14226,12 @@
  {
    fputs (ASM_LONG, file);
    output_addr_const (file, x);
@@ -126,7 +126,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
    switch (size)
      {
      case 4:
-@@ -14953,6 +15021,10 @@ i386_asm_output_addr_const_extra (FILE *
+@@ -15717,6 +15785,10 @@
        output_addr_const (file, op);
        fputs ("@indntpoff", file);
        break;
@@ -137,10 +137,9 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.c gcc-4.8-20130303/gcc/config/i
  #if TARGET_MACHO
      case UNSPEC_MACHOPIC_OFFSET:
        output_addr_const (file, op);
-Only in gcc-4.8-20130303/gcc/config/i386: i386.c.orig
-diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.md gcc-4.8-20130303/gcc/config/i386/i386.md
---- gcc-4.8-20130303~/gcc/config/i386/i386.md	2013-01-28 14:42:55 -0600
-+++ gcc-4.8-20130303/gcc/config/i386/i386.md	2013-03-16 08:10:58 -0500
+diff -ur gcc-4.9.0-2/gcc/config/i386/i386.md gcc-4.9.0/gcc/config/i386/i386.md
+--- gcc-4.9.0-2/gcc/config/i386/i386.md	2014-04-01 09:40:27.000000000 -0500
++++ gcc-4.9.0/gcc/config/i386/i386.md	2014-06-09 12:59:57.858825241 -0500
 @@ -78,6 +78,7 @@
    UNSPEC_PLTOFF
    UNSPEC_MACHOPIC_OFFSET
@@ -157,7 +156,7 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.md gcc-4.8-20130303/gcc/config/
    UNSPEC_TLS_GD
    UNSPEC_TLS_LD_BASE
    UNSPEC_TLSDESC
-@@ -12842,6 +12844,21 @@
+@@ -12789,6 +12791,21 @@
     (set_attr "memory" "load")
     (set_attr "imm_disp" "false")])
  
@@ -179,11 +178,10 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/i386.md gcc-4.8-20130303/gcc/config/
  (define_insn "*add_tp_<mode>"
    [(set (match_operand:P 0 "register_operand" "=r")
  	(plus:P (unspec:P [(const_int 0)] UNSPEC_TP)
-Only in gcc-4.8-20130303/gcc/config/i386: i386.md.orig
-diff -rup gcc-4.8-20130303~/gcc/config/i386/mingw32.h gcc-4.8-20130303/gcc/config/i386/mingw32.h
---- gcc-4.8-20130303~/gcc/config/i386/mingw32.h	2013-01-10 14:38:27 -0600
-+++ gcc-4.8-20130303/gcc/config/i386/mingw32.h	2013-03-16 08:19:21 -0500
-@@ -246,3 +246,12 @@ do {						         \
+diff -ur gcc-4.9.0-2/gcc/config/i386/mingw32.h gcc-4.9.0/gcc/config/i386/mingw32.h
+--- gcc-4.9.0-2/gcc/config/i386/mingw32.h	2014-06-09 06:44:41.000000000 -0500
++++ gcc-4.9.0/gcc/config/i386/mingw32.h	2014-06-09 12:59:57.858825241 -0500
+@@ -258,3 +258,12 @@
  
  /* We should find a way to not have to update this manually.  */
  #define LIBGCJ_SONAME "libgcj" /*LIBGCC_EH_EXTN*/ "-13.dll"
@@ -197,12 +195,10 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/mingw32.h gcc-4.8-20130303/gcc/confi
 +#define ASM_OUTPUT_TLS_COMMON
 +#endif
 \ No newline at end of file
-Only in gcc-4.8-20130303/gcc/config/i386: mingw32.h.orig
-Only in gcc-4.8-20130303/gcc/config/i386: mingw32.h.rej
-diff -rup gcc-4.8-20130303~/gcc/config/i386/predicates.md gcc-4.8-20130303/gcc/config/i386/predicates.md
---- gcc-4.8-20130303~/gcc/config/i386/predicates.md	2013-01-10 14:38:27 -0600
-+++ gcc-4.8-20130303/gcc/config/i386/predicates.md	2013-03-16 08:10:58 -0500
-@@ -140,6 +140,7 @@
+diff -ur gcc-4.9.0-2/gcc/config/i386/predicates.md gcc-4.9.0/gcc/config/i386/predicates.md
+--- gcc-4.9.0-2/gcc/config/i386/predicates.md	2014-03-25 16:47:41.000000000 -0500
++++ gcc-4.9.0/gcc/config/i386/predicates.md	2014-06-09 12:59:57.858825241 -0500
+@@ -167,6 +167,7 @@
  	  case UNSPEC_DTPOFF:
  	  case UNSPEC_GOTNTPOFF:
  	  case UNSPEC_NTPOFF:
@@ -210,11 +206,10 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/predicates.md gcc-4.8-20130303/gcc/c
  	    return true;
  	  default:
  	    break;
-Only in gcc-4.8-20130303/gcc/config/i386: predicates.md.orig
-diff -rup gcc-4.8-20130303~/gcc/config/i386/winnt.c gcc-4.8-20130303/gcc/config/i386/winnt.c
---- gcc-4.8-20130303~/gcc/config/i386/winnt.c	2013-02-04 11:19:56 -0600
-+++ gcc-4.8-20130303/gcc/config/i386/winnt.c	2013-03-16 08:10:58 -0500
-@@ -412,6 +412,8 @@ i386_pe_unique_section (tree decl, int r
+diff -ur gcc-4.9.0-2/gcc/config/i386/winnt.c gcc-4.9.0/gcc/config/i386/winnt.c
+--- gcc-4.9.0-2/gcc/config/i386/winnt.c	2014-01-02 16:23:26.000000000 -0600
++++ gcc-4.9.0/gcc/config/i386/winnt.c	2014-06-09 12:59:57.858825241 -0500
+@@ -430,6 +430,8 @@
      prefix = ".text$";
    else if (decl_readonly_section (decl, reloc))
      prefix = ".rdata$";
@@ -223,11 +218,10 @@ diff -rup gcc-4.8-20130303~/gcc/config/i386/winnt.c gcc-4.8-20130303/gcc/config/
    else
      prefix = ".data$";
    len = strlen (name) + strlen (prefix);
-Only in gcc-4.8-20130303/gcc/config/i386: winnt.c.orig
-diff -rup gcc-4.8-20130303~/libgcc/unwind.inc gcc-4.8-20130303/libgcc/unwind.inc
---- gcc-4.8-20130303~/libgcc/unwind.inc	2013-02-04 13:06:20 -0600
-+++ gcc-4.8-20130303/libgcc/unwind.inc	2013-03-24 08:07:25 -0500
-@@ -127,7 +127,8 @@ _Unwind_RaiseException(struct _Unwind_Ex
+diff -ur gcc-4.9.0-2/libgcc/unwind.inc gcc-4.9.0/libgcc/unwind.inc
+--- gcc-4.9.0-2/libgcc/unwind.inc	2014-01-02 16:25:22.000000000 -0600
++++ gcc-4.9.0/libgcc/unwind.inc	2014-06-09 12:59:57.878834307 -0500
+@@ -127,7 +127,8 @@
    exc->private_1 = 0;
    exc->private_2 = uw_identify_context (&cur_context);
  
