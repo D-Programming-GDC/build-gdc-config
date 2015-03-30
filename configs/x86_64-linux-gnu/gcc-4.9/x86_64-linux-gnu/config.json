@@ -1,7 +1,8 @@
 {
-    "target":"native",
+    "target":"x86_64-linux-gnu",
     "runtime":"yes",
     "set":"standard",
     "type":0,
-    "ctTarget":"x86_64-gdcproject-linux-gnu"
+    "ctTarget":"x86_64-gdcproject-linux-gnu",
+    "backend": "ctng"
 }

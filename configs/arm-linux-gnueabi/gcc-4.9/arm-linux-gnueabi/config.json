@@ -1,8 +1,9 @@
 {
-    "target":"native",
+    "target":"arm-linux-gnueabi",
     "runtime":"yes",
     "set":"standard",
     "type":0,
-    "depends":["arm-linux-gnueabi"],
-    "ctTarget":"arm-gdcproject-linux-gnueabi"
+    "depends":["x86_64-linux-gnu/gcc-4.9/arm-gdcproject-linux-gnueabi"],
+    "ctTarget":"arm-gdcproject-linux-gnueabi",
+    "backend": "ctng"
 }

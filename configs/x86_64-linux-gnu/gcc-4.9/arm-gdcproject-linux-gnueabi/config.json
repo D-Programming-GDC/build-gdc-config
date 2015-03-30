@@ -4,5 +4,6 @@
     "set":"standard",
     "type":0,
     "depends":[],
-    "ctTarget":"arm-gdcproject-linux-gnueabi"
+    "ctTarget":"arm-gdcproject-linux-gnueabi",
+    "backend": "ctng"
 }
