@@ -1,6 +1,6 @@
 {
     "target":"i686-w64-mingw32",
-    "runtime":"no",
+    "runtime":"yes",
     "set":"standard",
     "comment": "Unsupported alpha build",
     "type":0,

@@ -1,6 +1,6 @@
 {
     "target":"x86_64-w64-mingw32",
-    "runtime":"no",
+    "runtime":"yes",
     "set":"standard",
     "comment": "Unsupported alpha build. SEH",
     "type":0,
