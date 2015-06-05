@@ -1,0 +1,10 @@
+{
+    "target":"x86_64-w64-mingw32",
+    "runtime":"yes",
+    "set":"standard",
+    "comment": "Unsupported alpha build. SEH",
+    "type":0,
+    "depends":["x86_64-linux-gnu/gcc-4.9/x86_64-w64-mingw32"],
+    "ctTarget":"x86_64-gdcproject-mingw32",
+    "backend": "ctng"
+}
