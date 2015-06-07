@@ -1,0 +1,19 @@
+[
+    "arm-linux-gnueabi/gcc-snapshot/arm-linux-gnueabi",
+    "arm-linux-gnueabihf/gcc-snapshot/arm-linux-gnueabihf",
+    "i686-linux-gnu/gcc-snapshot/arm-gdcproject-linux-gnueabi",
+    "i686-linux-gnu/gcc-snapshot/arm-gdcproject-linux-gnueabihf",
+    "i686-linux-gnu/gcc-snapshot/i686-linux-gnu",
+    "i686-w64-mingw32/gcc-snapshot/arm-gdcproject-linux-gnueabi",
+    "i686-w64-mingw32/gcc-snapshot/arm-gdcproject-linux-gnueabihf",
+    "i686-w64-mingw32/gcc-snapshot/i686-w64-mingw32",
+    "x86_64-linux-gnu/gcc-snapshot/arm-gdcproject-linux-gnueabi",
+    "x86_64-linux-gnu/gcc-snapshot/arm-gdcproject-linux-gnueabihf",
+    "x86_64-linux-gnu/gcc-snapshot/i686-linux-gnu",
+    "x86_64-linux-gnu/gcc-snapshot/i686-w64-mingw32",
+    "x86_64-linux-gnu/gcc-snapshot/x86_64-linux-gnu",
+    "x86_64-linux-gnu/gcc-snapshot/x86_64-w64-mingw32",
+    "x86_64-w64-mingw32/gcc-snapshot/arm-gdcproject-linux-gnueabi",
+    "x86_64-w64-mingw32/gcc-snapshot/arm-gdcproject-linux-gnueabihf",
+    "x86_64-w64-mingw32/gcc-snapshot/x86_64-w64-mingw32"
+]
