@@ -4,7 +4,7 @@
     "set":"standard",
     "comment": "Unsupported alpha build",
     "type":0,
-    "depends":["x86_64-linux-gnu/gcc-4.9/i686-w64-mingw32"],
+    "depends":["x86_64-linux-gnu/gcc-snapshot/i686-w64-mingw32"],
     "ctTarget":"i686-gdcproject-mingw32",
     "backend": "ctng"
 }

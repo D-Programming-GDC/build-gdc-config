@@ -3,7 +3,7 @@
     "runtime":"yes",
     "set":"standard",
     "type":0,
-    "depends":["x86_64-linux-gnu/gcc-4.9/arm-gdcproject-linux-gnueabi", "x86_64-linux-gnu/gcc-4.9/x86_64-w64-mingw32"],
+    "depends":["x86_64-linux-gnu/gcc-snapshot/arm-gdcproject-linux-gnueabi", "x86_64-linux-gnu/gcc-snapshot/x86_64-w64-mingw32"],
     "ctTarget":"arm-gdcproject-linux-gnueabi",
     "backend": "ctng"
 }
