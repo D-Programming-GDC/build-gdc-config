@@ -6,8 +6,8 @@ diff -ur glibc-2.14/configure glibc-2.14.new/configure
    ac_prog_version=`$CC -v 2>&1 | sed -n 's/^.*version \([egcygnustpi-]*[0-9.]*\).*$/\1/p'`
    case $ac_prog_version in
      '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
--    3.4* | 4.[0-9]* | [5-9].* )
-+    3.4* | 4.[0-9]* )
+-    3.4* | 4.[0-9]* )
++    3.4* | 4.[0-9]* | [5-9].* )
         ac_prog_version="$ac_prog_version, ok"; ac_verc_fail=no;;
      *) ac_prog_version="$ac_prog_version, bad"; ac_verc_fail=yes;;
  
