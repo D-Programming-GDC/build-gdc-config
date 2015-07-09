@@ -5,5 +5,6 @@
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-4.9/arm-gdcproject-linux-gnueabihf", "x86_64-linux-gnu/gcc-4.9/i686-linux-gnu"],
     "ctTarget":"arm-gdcproject-linux-gnueabihf",
-    "backend": "ctng"
+    "backend": "ctng",
+    "buildID": "i686-linux-gnu/arm-gdcproject-linux-gnueabihf"
 }

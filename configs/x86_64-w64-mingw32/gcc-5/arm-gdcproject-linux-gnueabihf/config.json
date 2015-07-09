@@ -5,5 +5,6 @@
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-5/arm-gdcproject-linux-gnueabihf", "x86_64-linux-gnu/gcc-5/x86_64-w64-mingw32"],
     "ctTarget":"arm-gdcproject-linux-gnueabihf",
-    "backend": "ctng"
+    "backend": "ctng",
+    "buildID": "x86-w64-mingw32/arm-gdcproject-linux-gnueabihf"
 }

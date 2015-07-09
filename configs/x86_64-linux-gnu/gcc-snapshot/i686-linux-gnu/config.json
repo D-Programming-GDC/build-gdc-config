@@ -4,5 +4,6 @@
     "set":"standard",
     "type":0,
     "ctTarget":"i686-gdcproject-linux-gnu",
-    "backend": "ctng"
+    "backend": "ctng",
+    "buildID": "x86_64-linux-gnu/i686-linux-gnu"
 }
