@@ -5,7 +5,7 @@
     "comment": "Unsupported alpha build. SEH",
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-4.9/x86_64-w64-mingw32"],
-    "ctTarget":"x86_64-gdcproject-mingw32",
+    "ctTarget":"x86_64-mingw32",
     "backend": "ctng",
     "buildID": "x86-w64-mingw32/x86_64-w64-mingw32"
 }

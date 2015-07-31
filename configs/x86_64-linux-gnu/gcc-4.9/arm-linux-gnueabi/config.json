@@ -1,0 +1,10 @@
+{
+    "target":"arm-linux-gnueabi",
+    "runtime":"yes",
+    "set":"standard",
+    "type":0,
+    "depends":[],
+    "ctTarget":"arm-linux-gnueabi",
+    "backend": "ctng",
+    "buildID": "x86_64-linux-gnu/arm-linux-gnueabi"
+}

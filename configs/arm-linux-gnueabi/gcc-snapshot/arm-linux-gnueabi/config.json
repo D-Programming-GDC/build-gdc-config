@@ -3,8 +3,8 @@
     "runtime":"yes",
     "set":"standard",
     "type":0,
-    "depends":["x86_64-linux-gnu/gcc-snapshot/arm-gdcproject-linux-gnueabi"],
-    "ctTarget":"arm-gdcproject-linux-gnueabi",
+    "depends":["x86_64-linux-gnu/gcc-snapshot/arm-linux-gnueabi"],
+    "ctTarget":"arm-linux-gnueabi",
     "backend": "ctng",
     "buildID": "arm-linux-gnueabi/arm-linux-gnueabi"
 }

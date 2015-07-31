@@ -1,0 +1,10 @@
+{
+    "target":"arm-linux-gnueabi",
+    "runtime":"yes",
+    "set":"standard",
+    "type":0,
+    "depends":["x86_64-linux-gnu/gcc-5/arm-linux-gnueabi", "x86_64-linux-gnu/gcc-5/i686-w64-mingw32"],
+    "ctTarget":"arm-linux-gnueabi",
+    "backend": "ctng",
+    "buildID": "i686-w64-mingw32/arm-linux-gnueabi"
+}
