@@ -3,7 +3,6 @@
     "runtime":"yes",
     "set":"standard",
     "comment": "Unsupported alpha build. SEH",
-    "type":0,
     "backend": "ctng",
     "buildID": "x86_64-linux-gnu/x86_64-w64-mingw32"
 }

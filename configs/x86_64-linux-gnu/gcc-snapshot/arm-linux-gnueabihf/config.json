@@ -2,7 +2,6 @@
     "target":"arm-linux-gnueabihf",
     "runtime":"yes",
     "set":"standard",
-    "type":0,
     "depends":[],
     "backend": "ctng",
     "buildID": "x86_64-linux-gnu/arm-linux-gnueabihf"
