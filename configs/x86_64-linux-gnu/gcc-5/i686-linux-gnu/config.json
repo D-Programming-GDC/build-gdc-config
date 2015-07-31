@@ -3,7 +3,6 @@
     "runtime":"yes",
     "set":"standard",
     "type":0,
-    "ctTarget":"i686-linux-gnu",
     "backend": "ctng",
     "buildID": "x86_64-linux-gnu/i686-linux-gnu"
 }

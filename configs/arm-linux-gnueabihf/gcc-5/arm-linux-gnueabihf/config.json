@@ -4,7 +4,6 @@
     "set":"standard",
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-5/arm-linux-gnueabihf"],
-    "ctTarget":"arm-linux-gnueabihf",
     "backend": "ctng",
     "buildID": "arm-linux-gnueabihf/arm-linux-gnueabihf"
 }

@@ -3,7 +3,6 @@
     "runtime":"yes",
     "set":"standard",
     "type":0,
-    "ctTarget":"x86_64-linux-gnu",
     "backend": "ctng",
     "buildID": "x86_64-linux-gnu/x86_64-linux-gnu"
 }

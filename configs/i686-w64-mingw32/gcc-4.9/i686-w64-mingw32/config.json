@@ -5,7 +5,6 @@
     "comment": "Unsupported alpha build",
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-4.9/i686-w64-mingw32"],
-    "ctTarget":"i686-mingw32",
     "backend": "ctng",
     "buildID": "i686-w64-mingw32/i686-w64-mingw32"
 }

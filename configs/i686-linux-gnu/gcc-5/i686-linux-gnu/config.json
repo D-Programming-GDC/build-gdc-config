@@ -4,7 +4,6 @@
     "set":"standard",
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-5/i686-linux-gnu"],
-    "ctTarget":"i686-linux-gnu",
     "backend": "ctng",
     "buildID": "i686-linux-gnu/i686-linux-gnu"
 }

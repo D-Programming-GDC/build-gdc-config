@@ -4,7 +4,6 @@
     "set":"standard",
     "type":0,
     "depends":["x86_64-linux-gnu/gcc-snapshot/arm-linux-gnueabi", "x86_64-linux-gnu/gcc-snapshot/i686-linux-gnu"],
-    "ctTarget":"arm-linux-gnueabi",
     "backend": "ctng",
     "buildID": "i686-linux-gnu/arm-linux-gnueabi"
 }
