@@ -1,0 +1,41 @@
+diff -ur gcc-arm-none-eabi-4_9-2015q2-20150609/build-toolchain.sh gcc-arm-none-eabi-4_9-2015q2-20150609.new/build-toolchain.sh
+--- gcc-arm-none-eabi-4_9-2015q2-20150609/build-toolchain.sh	2015-06-09 20:27:28.000000000 +0200
++++ gcc-arm-none-eabi-4_9-2015q2-20150609.new/build-toolchain.sh	2015-07-31 21:34:19.692485339 +0200
+@@ -402,7 +402,8 @@
+     --mandir=$INSTALLDIR_NATIVE_DOC/man \
+     --htmldir=$INSTALLDIR_NATIVE_DOC/html \
+     --pdfdir=$INSTALLDIR_NATIVE_DOC/pdf \
+-    --enable-languages=c,c++ \
++    --enable-languages=c,c++,d \
++    --disable-libphobos \
+     --enable-plugins \
+     --disable-decimal-float \
+     --disable-libffi \
+@@ -465,7 +466,8 @@
+ 
+ $SRCDIR/$GCC/configure --target=$TARGET \
+     --prefix=$BUILDDIR_NATIVE/target-libs \
+-    --enable-languages=c,c++ \
++    --enable-languages=c,c++,d \
++    --disable-libphobos \
+     --disable-decimal-float \
+     --disable-libffi \
+     --disable-libgomp \
+@@ -684,6 +686,7 @@
+     --htmldir=$INSTALLDIR_MINGW_DOC/html \
+     --pdfdir=$INSTALLDIR_MINGW_DOC/pdf \
+     --disable-nls \
++    --disable-werror \
+     --enable-plugins \
+     --with-sysroot=$INSTALLDIR_MINGW/arm-none-eabi \
+     "--with-pkgversion=$PKGVERSION"
+@@ -740,7 +743,8 @@
+     --mandir=$INSTALLDIR_MINGW_DOC/man \
+     --htmldir=$INSTALLDIR_MINGW_DOC/html \
+     --pdfdir=$INSTALLDIR_MINGW_DOC/pdf \
+-    --enable-languages=c,c++ \
++    --enable-languages=c,c++,d \
++    --disable-libphobos \
+     --disable-decimal-float \
+     --disable-libffi \
+     --disable-libgomp \

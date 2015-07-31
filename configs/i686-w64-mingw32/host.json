@@ -6,6 +6,10 @@
     {
       "id":"standard",
       "name":"Standard builds"
+    },
+    {
+      "id":"gcc-arm-embedded",
+      "name":"GCC ARM Embedded builds"
     }
   ]
 }

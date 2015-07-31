@@ -1,0 +1,15 @@
+{
+    "target":"arm-none-eabi",
+    "runtime":"no",
+    "set":"gcc-arm-embedded",
+    "backend": "gcc-arm-embedded",
+    "backendConfig":
+    {
+        "srcURL": "https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q2-update/+download/gcc-arm-none-eabi-4_9-2015q2-20150609-src.tar.bz2",
+        "gccVersion": "4.9.2",
+        "nativeTools": "https://launchpad.net/gcc-arm-embedded-misc/native-build-tools/20150408/+download/prebuilt-native-tools.tar.lzma",
+        "pythonURL": "https://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz"
+    },
+    "depends": ["x86_64-linux-gnu/gcc-4.9/x86_64-linux-gnu"],
+    "buildID": "x86_64-linux-gnu/gcc-arm-embedded"
+}
