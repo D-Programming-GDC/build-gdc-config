@@ -1,0 +1,17 @@
+{
+    "target":"arm-none-eabi",
+    "runtime":"no",
+    "set":"standard",
+    "backend": "dkPro",
+    "backendConfig":
+    {
+        "srcURL": "http://downloads.sourceforge.net/project/devkitpro/buildscripts/buildscripts-20150216.tar.bz2",
+        "gccVersion": "4.9.2",
+        "complibs": "ftp://ftp.gdcproject.org/extra/complibs_linux_x86_64_gcc4.9r0.tar.xz",
+        "dkName": "devkitARM",
+        "baseToolchain": "http://downloads.sourceforge.net/project/devkitpro/devkitARM/devkitARM_r44/devkitARM_r44-x86_64-linux.tar.bz2",
+        "filename": "devkitARM_r44-x86_64-linux-gdc+%s.%s"
+    },
+    "depends": [],
+    "buildID": "x86_64-linux-gnu/devkitARM"
+}

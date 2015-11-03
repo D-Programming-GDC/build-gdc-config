@@ -1,0 +1,133 @@
+diff --git a/build-devkit.sh b/build-devkit.sh
+index 89aa43e..0234d6e 100755
+--- a/build-devkit.sh
++++ b/build-devkit.sh
+@@ -66,6 +66,13 @@ function extract_and_patch {
+ 			exit 1
+ 		fi
+ 		tar $extractflags "$SRCDIR/$1-$2$archivetype" || { echo "Error extracting "$1; exit 1; }
++
++		if [ $1 == "gcc" ]; then
++			GCC_PATH="$PWD/$1-$2"
++			pushd /home/build/GDC/
++			./setup-gcc.sh $GCC_PATH || { echo "Error integrating GDC sources"; exit 1; }
++			popd
++		fi
+ 		touch extracted-$1
+ 	fi
+ 	if [[ ! -f patched-$1 && -f $patchdir/$1-$2.patch ]]; then
+@@ -240,7 +247,7 @@ cd $BUILDDIR
+ 
+ extract_and_patch binutils $BINUTILS_VER bz2
+ extract_and_patch gcc $GCC_VER bz2
+-rm -fr gcc-$GCC_VER/zlib
++#rm -fr gcc-$GCC_VER/zlib
+ extract_and_patch newlib $NEWLIB_VER gz
+ extract_and_patch gdb $GDB_VER bz2
+ 
+@@ -266,6 +273,7 @@ done
+ # Build and install devkit components
+ #---------------------------------------------------------------------------------
+ if [ -f $scriptdir/build-gcc.sh ]; then . $scriptdir/build-gcc.sh || { echo "Error building toolchain"; exit 1; }; cd $BUILDSCRIPTDIR; fi
++exit 0
+ if [ -f $scriptdir/build-tools.sh ]; then . $scriptdir/build-tools.sh || { echo "Error building tools"; exit 1; }; cd $BUILDSCRIPTDIR; fi
+ if [ -f $scriptdir/build-crtls.sh ]; then . $scriptdir/build-crtls.sh || { echo "Error building crtls"; exit 1; }; cd $BUILDSCRIPTDIR; fi
+ 
+diff --git a/config.sh b/config.sh
+new file mode 100755
+index 0000000..129e1dd
+--- /dev/null
++++ b/config.sh
+@@ -0,0 +1,31 @@
++#!/bin/sh
++#---------------------------------------------------------------------------------
++# variables for unattended script execution
++#---------------------------------------------------------------------------------
++
++#---------------------------------------------------------------------------------
++# Select package
++#---------------------------------------------------------------------------------
++#   0: User selects manually
++#   1: devkitARM
++#   2: devkitPPC
++#   3: devkitPSP
++#---------------------------------------------------------------------------------
++BUILD_DKPRO_PACKAGE=1
++
++#---------------------------------------------------------------------------------
++# Toolchain installation directory, comment if not specified
++#---------------------------------------------------------------------------------
++BUILD_DKPRO_INSTALLDIR=/home/build/tmp/dkPro
++
++#---------------------------------------------------------------------------------
++# Path to previously downloaded source packages, comment if not specified
++#---------------------------------------------------------------------------------
++BUILD_DKPRO_SRCDIR=/home/build/shared/sources/dkPro
++#---------------------------------------------------------------------------------
++# Automated script execution
++#---------------------------------------------------------------------------------
++#  0: Ask to delete build folders & patched sources
++#  1: Use defaults, don't pause for answers
++#---------------------------------------------------------------------------------
++BUILD_DKPRO_AUTOMATED=1
+diff --git a/dkarm-eabi/scripts/build-gcc.sh b/dkarm-eabi/scripts/build-gcc.sh
+index 7225040..bd6d7d9 100755
+--- a/dkarm-eabi/scripts/build-gcc.sh
++++ b/dkarm-eabi/scripts/build-gcc.sh
+@@ -40,7 +40,7 @@ cd $target/gcc
+ if [ ! -f configured-gcc ]
+ then
+ 	CFLAGS="$cflags" CXXFLAGS="$cflags" LDFLAGS="$ldflags" CFLAGS_FOR_TARGET="-O2" CXXFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" ../../gcc-$GCC_VER/configure \
+-		--enable-languages=c,c++,objc,obj-c++ \
++		--enable-languages=c,c++,objc,obj-c++,d \
+ 		--with-gnu-as --with-gnu-ld --with-gcc \
+ 		--with-march=armv4t\
+ 		--enable-poison-system-directories \
+@@ -49,6 +49,8 @@ then
+ 		--enable-threads --disable-win32-registry --disable-nls --disable-debug\
+ 		--disable-libmudflap --disable-libssp --disable-libgomp \
+ 		--disable-libstdcxx-pch \
++		--disable-libphobos \
++		--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS \
+ 		--target=$target \
+ 		--with-newlib \
+ 		--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
+diff --git a/dkppc/scripts/build-gcc.sh b/dkppc/scripts/build-gcc.sh
+index 82fa747..667fe30 100755
+--- a/dkppc/scripts/build-gcc.sh
++++ b/dkppc/scripts/build-gcc.sh
+@@ -76,12 +76,14 @@ cd $target/gcc
+ if [ ! -f configured-gcc ]
+ then
+ 	CFLAGS="$cflags" CXXFLAGS="$cflags" LDFLAGS="$ldflags" CFLAGS_FOR_TARGET="-O2" CXXFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" ../../gcc-$GCC_VER/configure \
+-	--enable-languages=c,c++,objc \
++	--enable-languages=c,c++,objc,d \
+ 	--enable-lto $plugin_ld \
+ 	--with-cpu=750 \
+ 	--disable-nls --disable-shared --enable-threads --disable-multilib \
+ 	--disable-win32-registry \
+ 	--disable-libstdcxx-pch \
++	--disable-libphobos \
++	--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS \
+ 	--target=$target \
+ 	--with-newlib \
+ 	--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
+diff --git a/dkpsp/scripts/build-gcc.sh b/dkpsp/scripts/build-gcc.sh
+index aca1d93..0fddd79 100755
+--- a/dkpsp/scripts/build-gcc.sh
++++ b/dkpsp/scripts/build-gcc.sh
+@@ -43,11 +43,13 @@ cd $target/gcc
+ if [ ! -f configured-gcc ]
+ then
+ 	CFLAGS="$cflags" LDFLAGS="$ldflags" CFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" ../../gcc-$GCC_VER/configure \
+-	--enable-languages=c,c++,objc,obj-c++ \
++	--enable-languages=c,c++,objc,obj-c++,d \
+ 	--disable-multilib\
+ 	--disable-shared --disable-win32-registry --disable-nls\
+ 	--enable-cxx-flags="-G0" \
+ 	--disable-libstdcxx-pch \
++	--disable-libphobos \
++	--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS \
+ 	--target=$target \
+ 	--with-newlib \
+ 	--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
