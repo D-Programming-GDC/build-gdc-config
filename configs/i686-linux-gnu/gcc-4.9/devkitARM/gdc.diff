@@ -34,8 +34,8 @@ index 89aa43e..0234d6e 100755
  if [ -f $scriptdir/build-crtls.sh ]; then . $scriptdir/build-crtls.sh || { echo "Error building crtls"; exit 1; }; cd $BUILDSCRIPTDIR; fi
  
 diff --git a/config.sh b/config.sh
-new file mode 100755
-index 0000000..129e1dd
+new file mode 100644
+index 0000000..35724e5
 --- /dev/null
 +++ b/config.sh
 @@ -0,0 +1,31 @@
@@ -71,7 +71,7 @@ index 0000000..129e1dd
 +#---------------------------------------------------------------------------------
 +BUILD_DKPRO_AUTOMATED=1
 diff --git a/dkarm-eabi/scripts/build-gcc.sh b/dkarm-eabi/scripts/build-gcc.sh
-index 7225040..bd6d7d9 100755
+index 7225040..1247864 100755
 --- a/dkarm-eabi/scripts/build-gcc.sh
 +++ b/dkarm-eabi/scripts/build-gcc.sh
 @@ -40,7 +40,7 @@ cd $target/gcc
@@ -92,8 +92,65 @@ index 7225040..bd6d7d9 100755
  		--target=$target \
  		--with-newlib \
  		--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
+@@ -133,30 +135,31 @@ cd $BUILDDIR
+ #---------------------------------------------------------------------------------
+ # build and install the debugger
+ #---------------------------------------------------------------------------------
+-mkdir -p $target/gdb
+-cd $target/gdb
+ 
+-PLATFORM=`uname -s`
+-
+-if [ ! -f configured-gdb ]
+-then
+-	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
+-	--disable-nls --prefix=$prefix --target=$target --disable-werror \
+-	--disable-dependency-tracking \
+-	$CROSS_PARAMS \
+-	|| { echo "Error configuring gdb"; exit 1; }
+-	touch configured-gdb
+-fi
+-
+-if [ ! -f built-gdb ]
+-then
+-	$MAKE || { echo "Error building gdb"; exit 1; }
+-	touch built-gdb
+-fi
+-
+-if [ ! -f installed-gdb ]
+-then
+-	$MAKE install || { echo "Error installing gdb"; exit 1; }
+-	touch installed-gdb
+-fi
++#mkdir -p $target/gdb
++#cd $target/gdb
++#
++#PLATFORM=`uname -s`
++#
++#if [ ! -f configured-gdb ]
++#then
++#	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
++#	--disable-nls --prefix=$prefix --target=$target --disable-werror \
++#	--disable-dependency-tracking \
++#	$CROSS_PARAMS \
++#	|| { echo "Error configuring gdb"; exit 1; }
++#	touch configured-gdb
++#fi
++#
++#if [ ! -f built-gdb ]
++#then
++#	$MAKE || { echo "Error building gdb"; exit 1; }
++#	touch built-gdb
++#fi
++#
++#if [ ! -f installed-gdb ]
++#then
++#	$MAKE install || { echo "Error installing gdb"; exit 1; }
++#	touch installed-gdb
++#fi
+ 
 diff --git a/dkppc/scripts/build-gcc.sh b/dkppc/scripts/build-gcc.sh
-index 82fa747..667fe30 100755
+index 82fa747..3e0ef4e 100755
 --- a/dkppc/scripts/build-gcc.sh
 +++ b/dkppc/scripts/build-gcc.sh
 @@ -76,12 +76,14 @@ cd $target/gcc
@@ -112,6 +169,55 @@ index 82fa747..667fe30 100755
  	--target=$target \
  	--with-newlib \
  	--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
+@@ -164,26 +166,27 @@ cd $BUILDDIR
+ #---------------------------------------------------------------------------------
+ # build and install the debugger
+ #---------------------------------------------------------------------------------
+-mkdir -p $target/gdb
+-cd $target/gdb
+ 
+-if [ ! -f configured-gdb ]
+-then
+-	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
+-	--disable-nls --prefix=$prefix --target=$target --disable-werror --disable-dependency-tracking\
+-	$CROSS_PARAMS || { echo "Error configuring gdb"; exit 1; }
+-	touch configured-gdb
+-fi
+-
+-if [ ! -f built-gdb ]
+-then
+-	$MAKE || { echo "Error building gdb"; exit 1; }
+-	touch built-gdb
+-fi
+-
+-if [ ! -f installed-gdb ]
+-then
+-	$MAKE install || { echo "Error installing gdb"; exit 1; }
+-	touch installed-gdb
+-fi
++#mkdir -p $target/gdb
++#cd $target/gdb
++#
++#if [ ! -f configured-gdb ]
++#then
++#	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
++#	--disable-nls --prefix=$prefix --target=$target --disable-werror --disable-dependency-tracking\
++#	$CROSS_PARAMS || { echo "Error configuring gdb"; exit 1; }
++#	touch configured-gdb
++#fi
++#
++#if [ ! -f built-gdb ]
++#then
++#	$MAKE || { echo "Error building gdb"; exit 1; }
++#	touch built-gdb
++#fi
++#
++#if [ ! -f installed-gdb ]
++#then
++#	$MAKE install || { echo "Error installing gdb"; exit 1; }
++#	touch installed-gdb
++#fi
+ 
 diff --git a/dkpsp/scripts/build-gcc.sh b/dkpsp/scripts/build-gcc.sh
 index aca1d93..0fddd79 100755
 --- a/dkpsp/scripts/build-gcc.sh
