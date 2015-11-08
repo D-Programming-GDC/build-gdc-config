@@ -1,5 +1,5 @@
 diff --git a/build-devkit.sh b/build-devkit.sh
-index 89aa43e..0234d6e 100755
+index 89aa43e..1758e8a 100755
 --- a/build-devkit.sh
 +++ b/build-devkit.sh
 @@ -66,6 +66,13 @@ function extract_and_patch {
@@ -16,16 +16,53 @@ index 89aa43e..0234d6e 100755
  		touch extracted-$1
  	fi
  	if [[ ! -f patched-$1 && -f $patchdir/$1-$2.patch ]]; then
-@@ -240,7 +247,7 @@ cd $BUILDDIR
+@@ -156,6 +163,12 @@ else
+ 	prefix=$INSTALLDIR/$package
+ fi
+ 
++if [ ! -z $COMP_LIBS ]; then
++	GCC_COMP_LIB_OPTIONS="--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS"
++	GDB_COMP_LIB_CFLAGS="-I${COMP_LIBS}/include"
++	GDB_COMP_LIB_LDFLAGS="-I${COMP_LIBS}/lib"
++fi
++
+ if [ "$BUILD_DKPRO_AUTOMATED" != "1" ] ; then
+ 
+ 	echo
+@@ -191,7 +204,7 @@ DEVKITPRO_URL="http://downloads.sourceforge.net/devkitpro"
+ patchdir=$(pwd)/$basedir/patches
+ scriptdir=$(pwd)/$basedir/scripts
+ 
+-archives="binutils-${BINUTILS_VER}.tar.bz2 gcc-${GCC_VER}.tar.bz2 newlib-${NEWLIB_VER}.tar.gz gdb-${GDB_VER}.tar.bz2"
++archives="binutils-${BINUTILS_VER}.tar.bz2 gcc-${GCC_VER}.tar.bz2 newlib-${NEWLIB_VER}.tar.gz"
+ 
+ if [ $VERSION -eq 1 ]; then
+ 
+@@ -234,15 +247,21 @@ do
+ 	fi
+ done
+ 
++gdb_archive="gdb-${GDB_VER}.tar.gz";
++echo $gdb_archive
++if [ ! -f $gdb_archive ]; then
++	$FETCH http://ftp.gnu.org/gnu/gdb/$gdb_archive || { echo "Error: Failed to download $gdb_archive"; exit 1; }
++fi
++
+ cd $BUILDSCRIPTDIR
+ mkdir -p $BUILDDIR
+ cd $BUILDDIR
  
  extract_and_patch binutils $BINUTILS_VER bz2
  extract_and_patch gcc $GCC_VER bz2
 -rm -fr gcc-$GCC_VER/zlib
 +#rm -fr gcc-$GCC_VER/zlib
  extract_and_patch newlib $NEWLIB_VER gz
- extract_and_patch gdb $GDB_VER bz2
+-extract_and_patch gdb $GDB_VER bz2
++extract_and_patch gdb $GDB_VER gz
  
-@@ -266,6 +273,7 @@ done
+ for archive in $targetarchives
+ do
+@@ -266,6 +285,7 @@ done
  # Build and install devkit components
  #---------------------------------------------------------------------------------
  if [ -f $scriptdir/build-gcc.sh ]; then . $scriptdir/build-gcc.sh || { echo "Error building toolchain"; exit 1; }; cd $BUILDSCRIPTDIR; fi
@@ -35,7 +72,7 @@ index 89aa43e..0234d6e 100755
  
 diff --git a/config.sh b/config.sh
 new file mode 100644
-index 0000000..35724e5
+index 0000000..129e1dd
 --- /dev/null
 +++ b/config.sh
 @@ -0,0 +1,31 @@
@@ -71,7 +108,7 @@ index 0000000..35724e5
 +#---------------------------------------------------------------------------------
 +BUILD_DKPRO_AUTOMATED=1
 diff --git a/dkarm-eabi/scripts/build-gcc.sh b/dkarm-eabi/scripts/build-gcc.sh
-index 7225040..1247864 100755
+index 7225040..a5c2508 100755
 --- a/dkarm-eabi/scripts/build-gcc.sh
 +++ b/dkarm-eabi/scripts/build-gcc.sh
 @@ -40,7 +40,7 @@ cd $target/gcc
@@ -83,77 +120,46 @@ index 7225040..1247864 100755
  		--with-gnu-as --with-gnu-ld --with-gcc \
  		--with-march=armv4t\
  		--enable-poison-system-directories \
-@@ -49,6 +49,8 @@ then
+@@ -49,12 +49,14 @@ then
  		--enable-threads --disable-win32-registry --disable-nls --disable-debug\
  		--disable-libmudflap --disable-libssp --disable-libgomp \
  		--disable-libstdcxx-pch \
 +		--disable-libphobos \
-+		--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS \
++		$GCC_COMP_LIB_OPTIONS \
  		--target=$target \
  		--with-newlib \
  		--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
-@@ -133,30 +135,31 @@ cd $BUILDDIR
+ 		--prefix=$prefix \
+ 		--enable-lto $plugin_ld\
+-		--with-bugurl="http://wiki.devkitpro.org/index.php/Bug_Reports" --with-pkgversion="devkitARM release 44" \
++		--with-bugurl="http://bugzilla.gdcproject.org" --with-pkgversion="devkitARM release 44 (GDC $DMD_FE - $GDC_REV)" \
+ 		$CROSS_PARAMS \
+ 		|| { echo "Error configuring gcc"; exit 1; }
+ 	touch configured-gcc
+@@ -133,6 +135,7 @@ cd $BUILDDIR
  #---------------------------------------------------------------------------------
  # build and install the debugger
  #---------------------------------------------------------------------------------
--mkdir -p $target/gdb
--cd $target/gdb
++
+ mkdir -p $target/gdb
+ cd $target/gdb
  
--PLATFORM=`uname -s`
--
--if [ ! -f configured-gdb ]
--then
+@@ -140,8 +143,8 @@ PLATFORM=`uname -s`
+ 
+ if [ ! -f configured-gdb ]
+ then
 -	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
 -	--disable-nls --prefix=$prefix --target=$target --disable-werror \
--	--disable-dependency-tracking \
--	$CROSS_PARAMS \
--	|| { echo "Error configuring gdb"; exit 1; }
--	touch configured-gdb
--fi
--
--if [ ! -f built-gdb ]
--then
--	$MAKE || { echo "Error building gdb"; exit 1; }
--	touch built-gdb
--fi
--
--if [ ! -f installed-gdb ]
--then
--	$MAKE install || { echo "Error installing gdb"; exit 1; }
--	touch installed-gdb
--fi
-+#mkdir -p $target/gdb
-+#cd $target/gdb
-+#
-+#PLATFORM=`uname -s`
-+#
-+#if [ ! -f configured-gdb ]
-+#then
-+#	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
-+#	--disable-nls --prefix=$prefix --target=$target --disable-werror \
-+#	--disable-dependency-tracking \
-+#	$CROSS_PARAMS \
-+#	|| { echo "Error configuring gdb"; exit 1; }
-+#	touch configured-gdb
-+#fi
-+#
-+#if [ ! -f built-gdb ]
-+#then
-+#	$MAKE || { echo "Error building gdb"; exit 1; }
-+#	touch built-gdb
-+#fi
-+#
-+#if [ ! -f installed-gdb ]
-+#then
-+#	$MAKE install || { echo "Error installing gdb"; exit 1; }
-+#	touch installed-gdb
-+#fi
- 
++	CFLAGS="$cflags $GDB_COMP_LIB_CFLAGS" LDFLAGS="$ldflags $GDB_COMP_LIB_LDFLAGS" ../../gdb-$GDB_VER/configure \
++	--disable-nls --prefix=$prefix/gdb-7.10 --target=$target --disable-werror \
+ 	--disable-dependency-tracking \
+ 	$CROSS_PARAMS \
+ 	|| { echo "Error configuring gdb"; exit 1; }
 diff --git a/dkppc/scripts/build-gcc.sh b/dkppc/scripts/build-gcc.sh
-index 82fa747..3e0ef4e 100755
+index 82fa747..71d7ad7 100755
 --- a/dkppc/scripts/build-gcc.sh
 +++ b/dkppc/scripts/build-gcc.sh
-@@ -76,12 +76,14 @@ cd $target/gcc
+@@ -76,18 +76,20 @@ cd $target/gcc
  if [ ! -f configured-gcc ]
  then
  	CFLAGS="$cflags" CXXFLAGS="$cflags" LDFLAGS="$ldflags" CFLAGS_FOR_TARGET="-O2" CXXFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" ../../gcc-$GCC_VER/configure \
@@ -165,75 +171,53 @@ index 82fa747..3e0ef4e 100755
  	--disable-win32-registry \
  	--disable-libstdcxx-pch \
 +	--disable-libphobos \
-+	--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS \
++	$GCC_COMP_LIB_OPTIONS \
  	--target=$target \
  	--with-newlib \
  	--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
-@@ -164,26 +166,27 @@ cd $BUILDDIR
+ 	--prefix=$prefix\
+ 	--disable-dependency-tracking \
+-	--with-bugurl="http://wiki.devkitpro.org/index.php/Bug_Reports" --with-pkgversion="devkitPPC release 27" \
++	--with-bugurl="http://bugzilla.gdcproject.org" --with-pkgversion="devkitPPC release 27 (GDC $DMD_FE - $GDC_REV)" \
+ 	$CROSS_PARAMS \
+ 	|| { echo "Error configuring gcc stage 1"; exit 1; }
+ 	touch configured-gcc
+@@ -164,13 +166,14 @@ cd $BUILDDIR
  #---------------------------------------------------------------------------------
  # build and install the debugger
  #---------------------------------------------------------------------------------
--mkdir -p $target/gdb
--cd $target/gdb
++
+ mkdir -p $target/gdb
+ cd $target/gdb
  
--if [ ! -f configured-gdb ]
--then
+ if [ ! -f configured-gdb ]
+ then
 -	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
 -	--disable-nls --prefix=$prefix --target=$target --disable-werror --disable-dependency-tracking\
--	$CROSS_PARAMS || { echo "Error configuring gdb"; exit 1; }
--	touch configured-gdb
--fi
--
--if [ ! -f built-gdb ]
--then
--	$MAKE || { echo "Error building gdb"; exit 1; }
--	touch built-gdb
--fi
--
--if [ ! -f installed-gdb ]
--then
--	$MAKE install || { echo "Error installing gdb"; exit 1; }
--	touch installed-gdb
--fi
-+#mkdir -p $target/gdb
-+#cd $target/gdb
-+#
-+#if [ ! -f configured-gdb ]
-+#then
-+#	CFLAGS="$cflags" LDFLAGS="$ldflags" ../../gdb-$GDB_VER/configure \
-+#	--disable-nls --prefix=$prefix --target=$target --disable-werror --disable-dependency-tracking\
-+#	$CROSS_PARAMS || { echo "Error configuring gdb"; exit 1; }
-+#	touch configured-gdb
-+#fi
-+#
-+#if [ ! -f built-gdb ]
-+#then
-+#	$MAKE || { echo "Error building gdb"; exit 1; }
-+#	touch built-gdb
-+#fi
-+#
-+#if [ ! -f installed-gdb ]
-+#then
-+#	$MAKE install || { echo "Error installing gdb"; exit 1; }
-+#	touch installed-gdb
-+#fi
- 
-diff --git a/dkpsp/scripts/build-gcc.sh b/dkpsp/scripts/build-gcc.sh
-index aca1d93..0fddd79 100755
---- a/dkpsp/scripts/build-gcc.sh
-+++ b/dkpsp/scripts/build-gcc.sh
-@@ -43,11 +43,13 @@ cd $target/gcc
- if [ ! -f configured-gcc ]
- then
- 	CFLAGS="$cflags" LDFLAGS="$ldflags" CFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" ../../gcc-$GCC_VER/configure \
--	--enable-languages=c,c++,objc,obj-c++ \
-+	--enable-languages=c,c++,objc,obj-c++,d \
- 	--disable-multilib\
- 	--disable-shared --disable-win32-registry --disable-nls\
- 	--enable-cxx-flags="-G0" \
- 	--disable-libstdcxx-pch \
-+	--disable-libphobos \
-+	--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS \
- 	--target=$target \
- 	--with-newlib \
- 	--with-headers=../../newlib-$NEWLIB_VER/newlib/libc/include \
++	CFLAGS="$cflags $GDB_COMP_LIB_CFLAGS" LDFLAGS="$ldflags $GDB_COMP_LIB_LDFLAGS" ../../gdb-$GDB_VER/configure \
++	--disable-nls --prefix=$prefix/gdb-7.10 --target=$target --disable-werror --disable-dependency-tracking\
+ 	$CROSS_PARAMS || { echo "Error configuring gdb"; exit 1; }
+ 	touch configured-gdb
+ fi
+diff --git a/select_toolchain.sh b/select_toolchain.sh
+index 46b64d9..7553bfb 100755
+--- a/select_toolchain.sh
++++ b/select_toolchain.sh
+@@ -33,7 +33,7 @@ case "$VERSION" in
+     GCC_VER=4.9.2
+     BINUTILS_VER=2.25
+     NEWLIB_VER=2.2.0
+-    GDB_VER=7.8.2
++    GDB_VER=7.10
+     basedir='dkarm-eabi'
+     package=devkitARM
+     target=arm-none-eabi
+@@ -43,7 +43,7 @@ case "$VERSION" in
+     GCC_VER=4.8.2
+     BINUTILS_VER=2.24
+     NEWLIB_VER=2.0.0
+-    GDB_VER=7.7
++    GDB_VER=7.10
+     basedir='dkppc'
+     package=devkitPPC
+     target=powerpc-eabi

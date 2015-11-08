@@ -3,6 +3,7 @@
     "runtime":"no",
     "set":"standard",
     "backend": "dkPro",
+    "url": "http://gdcproject.org/downloads/binaries/devkitARM/r44/",
     "backendConfig":
     {
         "srcURL": "http://downloads.sourceforge.net/project/devkitpro/buildscripts/buildscripts-20150216.tar.bz2",
@@ -10,7 +11,8 @@
         "complibs": "ftp://ftp.gdcproject.org/extra/complibs_windows_i686_gcc4.9r0.tar.xz",
         "dkName": "devkitARM",
         "baseToolchain": "http://downloads.sourceforge.net/project/devkitpro/devkitARM/devkitARM_r44/devkitARM_r44-x86_64-linux.tar.bz2",
-        "filename": "devkitARM_r44-win32-gdc+%s.%s"
+        "filename": "devkitARM_r44-win32-gdc+%s.%s",
+        "gdbVersion": "7.10"
     },
     "depends": ["x86_64-linux-gnu/gcc-4.9/i686-w64-mingw32", "x86_64-linux-gnu/gcc-4.9/devkitARM"],
     "buildID": "i686-w64-mingw32/devkitARM"
