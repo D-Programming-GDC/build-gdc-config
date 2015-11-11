@@ -109,9 +109,18 @@ index 0000000..129e1dd
 +#---------------------------------------------------------------------------------
 +BUILD_DKPRO_AUTOMATED=1
 diff --git a/dkarm-eabi/scripts/build-gcc.sh b/dkarm-eabi/scripts/build-gcc.sh
-index 7225040..6e091ae 100755
+index 7225040..8ee9af9 100755
 --- a/dkarm-eabi/scripts/build-gcc.sh
 +++ b/dkarm-eabi/scripts/build-gcc.sh
+@@ -20,7 +20,7 @@ fi
+ 
+ if [ ! -f built-binutils ]
+ then
+-  $MAKE || { echo "Error building binutils"; exit 1; }
++  $MAKE $MAKE_MULTI_FLAGS || { echo "Error building binutils"; exit 1; }
+   touch built-binutils
+ fi
+ 
 @@ -40,7 +40,7 @@ cd $target/gcc
  if [ ! -f configured-gcc ]
  then
