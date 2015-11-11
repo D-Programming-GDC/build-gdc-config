@@ -1,5 +1,5 @@
 diff --git a/build-devkit.sh b/build-devkit.sh
-index 89aa43e..1758e8a 100755
+index 89aa43e..6be5e5c 100755
 --- a/build-devkit.sh
 +++ b/build-devkit.sh
 @@ -66,6 +66,13 @@ function extract_and_patch {
@@ -16,10 +16,11 @@ index 89aa43e..1758e8a 100755
  		touch extracted-$1
  	fi
  	if [[ ! -f patched-$1 && -f $patchdir/$1-$2.patch ]]; then
-@@ -156,6 +163,12 @@ else
+@@ -156,6 +163,13 @@ else
  	prefix=$INSTALLDIR/$package
  fi
  
++MAKE_MULTI_FLAGS="-j2"
 +if [ ! -z $COMP_LIBS ]; then
 +	GCC_COMP_LIB_OPTIONS="--with-gmp=$COMP_LIBS --with-mpfr=$COMP_LIBS --with-mpc=$COMP_LIBS"
 +	GDB_COMP_LIB_CFLAGS="-I${COMP_LIBS}/include"
@@ -29,7 +30,7 @@ index 89aa43e..1758e8a 100755
  if [ "$BUILD_DKPRO_AUTOMATED" != "1" ] ; then
  
  	echo
-@@ -191,7 +204,7 @@ DEVKITPRO_URL="http://downloads.sourceforge.net/devkitpro"
+@@ -191,7 +205,7 @@ DEVKITPRO_URL="http://downloads.sourceforge.net/devkitpro"
  patchdir=$(pwd)/$basedir/patches
  scriptdir=$(pwd)/$basedir/scripts
  
@@ -38,7 +39,7 @@ index 89aa43e..1758e8a 100755
  
  if [ $VERSION -eq 1 ]; then
  
-@@ -234,15 +247,21 @@ do
+@@ -234,15 +248,21 @@ do
  	fi
  done
  
@@ -62,7 +63,7 @@ index 89aa43e..1758e8a 100755
  
  for archive in $targetarchives
  do
-@@ -266,6 +285,7 @@ done
+@@ -266,6 +286,7 @@ done
  # Build and install devkit components
  #---------------------------------------------------------------------------------
  if [ -f $scriptdir/build-gcc.sh ]; then . $scriptdir/build-gcc.sh || { echo "Error building toolchain"; exit 1; }; cd $BUILDSCRIPTDIR; fi
@@ -108,7 +109,7 @@ index 0000000..129e1dd
 +#---------------------------------------------------------------------------------
 +BUILD_DKPRO_AUTOMATED=1
 diff --git a/dkarm-eabi/scripts/build-gcc.sh b/dkarm-eabi/scripts/build-gcc.sh
-index 7225040..a5c2508 100755
+index 7225040..6e091ae 100755
 --- a/dkarm-eabi/scripts/build-gcc.sh
 +++ b/dkarm-eabi/scripts/build-gcc.sh
 @@ -40,7 +40,7 @@ cd $target/gcc
@@ -136,6 +137,24 @@ index 7225040..a5c2508 100755
  		$CROSS_PARAMS \
  		|| { echo "Error configuring gcc"; exit 1; }
  	touch configured-gcc
+@@ -62,7 +64,7 @@ fi
+ 
+ if [ ! -f built-gcc ]
+ then
+-	$MAKE all-gcc || { echo "Error building gcc stage1"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS all-gcc || { echo "Error building gcc stage1"; exit 1; }
+ 	touch built-gcc
+ fi
+ 
+@@ -116,7 +118,7 @@ cd $target/gcc
+ 
+ if [ ! -f built-stage2 ]
+ then
+-	$MAKE all || { echo "Error building gcc stage2"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS all || { echo "Error building gcc stage2"; exit 1; }
+ 	touch built-stage2
+ fi
+ 
 @@ -133,6 +135,7 @@ cd $BUILDDIR
  #---------------------------------------------------------------------------------
  # build and install the debugger
@@ -155,10 +174,37 @@ index 7225040..a5c2508 100755
  	--disable-dependency-tracking \
  	$CROSS_PARAMS \
  	|| { echo "Error configuring gdb"; exit 1; }
+@@ -150,7 +153,7 @@ fi
+ 
+ if [ ! -f built-gdb ]
+ then
+-	$MAKE || { echo "Error building gdb"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS || { echo "Error building gdb"; exit 1; }
+ 	touch built-gdb
+ fi
+ 
 diff --git a/dkppc/scripts/build-gcc.sh b/dkppc/scripts/build-gcc.sh
-index 82fa747..71d7ad7 100755
+index 82fa747..659ddd3 100755
 --- a/dkppc/scripts/build-gcc.sh
 +++ b/dkppc/scripts/build-gcc.sh
+@@ -24,7 +24,7 @@ fi
+ 
+ if [ ! -f built-binutils ]
+ then
+-	$MAKE || { echo "Error building ppc binutils"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS || { echo "Error building ppc binutils"; exit 1; }
+ 	touch built-binutils
+ fi
+ 
+@@ -55,7 +55,7 @@ fi
+ 
+ if [ ! -f built-binutils ]
+ then
+-	$MAKE || { echo "Error building mn10200 binutils"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS || { echo "Error building mn10200 binutils"; exit 1; }
+ 	touch built-binutils
+ fi
+ 
 @@ -76,18 +76,20 @@ cd $target/gcc
  if [ ! -f configured-gcc ]
  then
@@ -182,7 +228,25 @@ index 82fa747..71d7ad7 100755
  	$CROSS_PARAMS \
  	|| { echo "Error configuring gcc stage 1"; exit 1; }
  	touch configured-gcc
-@@ -164,13 +166,14 @@ cd $BUILDDIR
+@@ -95,7 +97,7 @@ fi
+ 
+ if [ ! -f built-gcc-stage1 ]
+ then
+-	$MAKE all-gcc || { echo "Error building gcc stage1"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS all-gcc || { echo "Error building gcc stage1"; exit 1; }
+ 	touch built-gcc-stage1
+ fi
+ 
+@@ -147,7 +149,7 @@ cd $target/gcc
+ 
+ if [ ! -f built-stage2 ]
+ then
+-	$MAKE all || { echo "Error building gcc stage2"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS all || { echo "Error building gcc stage2"; exit 1; }
+ 	touch built-stage2
+ fi
+ 
+@@ -164,20 +166,21 @@ cd $BUILDDIR
  #---------------------------------------------------------------------------------
  # build and install the debugger
  #---------------------------------------------------------------------------------
@@ -199,6 +263,14 @@ index 82fa747..71d7ad7 100755
  	$CROSS_PARAMS || { echo "Error configuring gdb"; exit 1; }
  	touch configured-gdb
  fi
+ 
+ if [ ! -f built-gdb ]
+ then
+-	$MAKE || { echo "Error building gdb"; exit 1; }
++	$MAKE $MAKE_MULTI_FLAGS || { echo "Error building gdb"; exit 1; }
+ 	touch built-gdb
+ fi
+ 
 diff --git a/select_toolchain.sh b/select_toolchain.sh
 index 46b64d9..7553bfb 100755
 --- a/select_toolchain.sh
