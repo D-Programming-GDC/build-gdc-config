@@ -1,0 +1,33 @@
+diff -ur gcc-4.9.0/libbacktrace/configure gcc-4.9.0-2/libbacktrace/configure
+--- gcc-4.9.0/libbacktrace/configure	2014-02-07 15:10:55.000000000 -0600
++++ gcc-4.9.0-2/libbacktrace/configure	2014-06-09 12:56:17.078940917 -0500
+@@ -11697,7 +11697,10 @@
+ # complicate dependencies.  Instead, we just compile with -fPIC.
+ PIC_FLAG=
+ if test -n "${with_target_subdir}"; then
+-  PIC_FLAG=-fPIC
++  case "${host}" in
++  *-*-mingw*) ;;
++  *) PIC_FLAG=-fPIC ;;
++  esac
+ fi
+ # Similarly, use -fPIC with --enable-host-shared:
+ # Check whether --enable-host-shared was given.
+Only in gcc-4.9.0-2/libbacktrace/: configure.~1~
+Only in gcc-4.9.0-2/libbacktrace/: configure.~2~
+Only in gcc-4.9.0-2/libbacktrace/: configure.~3~
+diff -ur gcc-4.9.0/libbacktrace/configure.ac gcc-4.9.0-2/libbacktrace/configure.ac
+--- gcc-4.9.0/libbacktrace/configure.ac	2014-02-07 15:10:55.000000000 -0600
++++ gcc-4.9.0-2/libbacktrace/configure.ac	2014-06-09 12:56:17.078940917 -0500
+@@ -163,7 +163,10 @@
+ # complicate dependencies.  Instead, we just compile with -fPIC.
+ PIC_FLAG=
+ if test -n "${with_target_subdir}"; then
+-  PIC_FLAG=-fPIC
++  case "${host}" in
++  *-*-mingw*) ;;
++  *) PIC_FLAG=-fPIC ;;
++  esac
+ fi
+ # Similarly, use -fPIC with --enable-host-shared:
+ AC_ARG_ENABLE(host-shared,
